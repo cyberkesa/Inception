@@ -4,7 +4,7 @@ FROM debian:buster
 
 WORKDIR		/var/www/html/
 
-RUN			apt-get update && apt-get install -y \
+RUN			apt-get update && apt-get install -y apt-utils \
 			wget nginx openssl vim
 
 COPY		conf/nginx.conf\

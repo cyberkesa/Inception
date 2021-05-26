@@ -3,11 +3,12 @@ services:
   nginx:
     build: ./requirements/nginx
     container_name: nginx
-    depends_on:
-      - wordpress
+    # depends_on:
+    #   - wordpress
     ports:
       - "80:80"
       - "443:443"
+    restart: unless-stopped
     env_file:
       - .env
     volumes:
@@ -16,11 +17,11 @@ services:
     networks:
       - inception_yourkesa
   wordpress:
-    # image: wordpress:5.7.0-php8.0-fpm
-    build: ./requirements/wordpress
+    image: wordpress:5.7.0-php8.0-fpm
+    # build: ./requirements/wordpress
     container_name: wordpress
-    # depends_on:
-    #   - mariadb
+    depends_on:
+      - mariadb
     restart: unless-stopped
     environment:
       WORDPRESS_DB_HOST: db
@@ -32,13 +33,14 @@ services:
     env_file:
       - .env
     volumes:
+      - ./requirements/wordpress/conf/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
       - website_files:/var/www/html
     networks:
       - inception_yourkesa
   mariadb:
     build: ./requirements/mariadb
+    restart: unless-stopped
     container_name: mariadb
-    # restart: always
     volumes:
       - database:/var/lib/mysql
     environment:

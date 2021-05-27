@@ -1,4 +1,4 @@
-YAML = srcs/docker-compose.yaml
+YAML = /Users/nastya/Desktop/Inception/docker-compose.yaml
 CMPS = docker-compose -f
 
 .PHONY: help build up start down destroy stop restart logs logs-api ps login-timescale login-api db-shell

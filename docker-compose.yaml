@@ -1,0 +1,53 @@
+version: '3.9'
+services:
+  mariadb:
+    build: /Users/nastya/Desktop/Inception/srcs/requirements/mariadb
+    env_file:
+      - /Users/nastya/Desktop/Inception/srcs/.env
+    restart: unless-stopped
+    container_name: mariadb
+    volumes:
+      - database:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - inception_yourkesa
+  wordpress:
+    # build: /Users/nastya/Desktop/Inception/srcs/requirements/wordpress
+    # image: wordpress:5.7.0-php8.0-fpm
+    image: wordpress:latest
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    env_file:
+      - /Users/nastya/Desktop/Inception/srcs/.env
+    volumes:
+      - ./requirements/wordpress/conf/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
+      - website_files:/var/www/html
+    networks:
+      - inception_yourkesa
+  nginx:
+    build: /Users/nastya/Desktop/Inception/srcs/requirements/nginx
+    container_name: nginx
+    depends_on:
+      - wordpress
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+    env_file:
+      - /Users/nastya/Desktop/Inception/srcs/.env
+    volumes:
+      - website_files:/var/www/html
+      # - ./requirements/nginx/site.conf:/etc/nginx/conf/conf.d/site.conf
+    networks:
+      - inception_yourkesa
+volumes:
+  database:
+  website_files:
+networks:
+  inception_yourkesa:
+    driver: bridge

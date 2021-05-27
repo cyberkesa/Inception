@@ -19,11 +19,6 @@ RUN			mkdir /etc/nginx/ssl && chmod 700 /etc/nginx/ssl && \
 			-keyout /etc/nginx/ssl/ssl.key \
 			-out /etc/nginx/ssl/ssl.crt \
 			-subj "/C=RU/ST=Moscow/L=Moscow/O=21school/OU=student/\
-			emailAddress=vwinfred@student.21-school.ru/CN=ft_server.com";
+			emailAddress=vwinfred@student.21-school.ru/CN=vwinfred.42.fr";
 
-COPY		.sh \
-			/usr/local/bin
-
-CMD			[ "bash", ".sh" ]
-
-EXPOSE  443
+CMD			["nginx", "-g", "daemon off;"]

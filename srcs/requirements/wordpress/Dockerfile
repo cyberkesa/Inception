@@ -8,5 +8,5 @@ RUN			apt-get update && apt-get install -y apt-utils \
 
 RUN			mv /usr/share/wordpress /var/www/html
 COPY		./conf/wp-config.php \
-			/var/www/html/wordpress
+			/var/www/html
 
